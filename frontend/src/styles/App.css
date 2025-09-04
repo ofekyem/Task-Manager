@@ -1,0 +1,82 @@
+body{
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: #f7f8fb; 
+  color: #333;
+}
+
+.App{
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.app-header{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.app-logo{
+  width: 48px;   
+  height: 48px;
+  object-fit: contain;
+  margin-top: 20px; 
+} 
+
+.App h1{
+  font-size: 2.2rem;
+  margin-bottom: 5px;
+  color: #1f2937; 
+}
+
+.App h4{
+  font-size: 1rem;
+  font-weight: normal;
+  color: #6b7280; 
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.App form{
+  margin-bottom: 20px;
+}
+
+button{
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  margin: 4px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #111827;
+  cursor: pointer;
+}
+
+button:hover{
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.search-input{
+  width: 60%;
+  max-width: 400px;
+  padding: 10px 12px 10px 40px;
+  margin: 12px auto 20px;
+  display: block;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none; 
+  background: url("../../public/searchicon.png") no-repeat 10px center;
+  background-size: 18px 18px;
+}
+
+.search-input:focus{
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px #506e98;
+}

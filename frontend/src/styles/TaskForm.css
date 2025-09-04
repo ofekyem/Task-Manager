@@ -1,0 +1,54 @@
+.task-form{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; 
+    justify-content: center; 
+    margin-bottom: 20px;
+}
+
+.task-form input,
+.task-form select,
+.task-form button{
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 10px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.task-form input[type="text"]:first-child{
+    min-width: 160px;
+}
+
+.task-form input[placeholder="Description"]{
+    min-width: 300px;
+}
+
+.task-form input:focus,
+.task-form select:focus{
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.task-form select{
+    background-color: white;
+    cursor: pointer;
+}
+
+.task-form button{
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 16px;
+}
+
+.task-form button:hover{
+    background-color: #2563eb;
+}
+
+.task-form button:active{
+    transform: scale(0.97);
+}
