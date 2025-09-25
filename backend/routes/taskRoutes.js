@@ -1,26 +1,13 @@
 const express = require("express");
+const Task = require("../models/taskModel"); 
+const auth = require("../middleware/auth"); 
+
 const router = express.Router(); 
 
-// The "Task" model: 
-class Task{ 
-    constructor(id, title, description, priority = "low"){
-        this.id = id; 
-        this.title = title; 
-        this.description = description; 
-        this.completed = false; // When the task is created its still not complete
-        this.createdAt = new Date(); // The current date
-        this.priority = priority; // Can be "low" or "medium" or "high"
-    }
-}  
-
-// the list of existing tasks: 
-let tasks = []; 
-// id counter:
-let nextId = 1;
-
-// Get /api/tasks - Get all tasks
-router.get("/", (req, res, next) => {
+// Get /api/tasks - Get all tasks by the authenticated user
+router.get("/",auth, async (req, res, next) => {
     try{ 
+        const tasks = await Task.find({ userId: req.user.id }); 
         res.json(tasks); 
 
     } catch (error){
@@ -29,7 +16,7 @@ router.get("/", (req, res, next) => {
 });  
 
 // POST /api/tasks - Create a new task
-router.post("/", (req, res, next) => {
+router.post("/", auth, async (req, res, next) => {
     try {
         const { title, description, priority } = req.body;  
 
@@ -48,25 +35,28 @@ router.post("/", (req, res, next) => {
             throw error; 
         }  
 
-        // Create the new task with given parameters, increase the id counter and push it to the existing tasks list.
-        const newTask = new Task(nextId, title.trim(), description, priority); 
-        nextId++; 
-        tasks.push(newTask); 
-        res.status(201).json(newTask); 
-
+        // Create the new task with given parameters, and add it to mongoDB
+        const task = new Task({
+            title: title.trim(),
+            description,
+            priority,
+            userId: req.user.id
+        });  
+        await task.save();
+        res.status(201).json(task);
+        
     } catch (error) {
         next(error);
     }
 }); 
 
 // PUT /api/tasks/:id - Update a task
-router.put("/:id", (req, res, next) => {
+router.put("/:id", auth, async (req, res, next) => {
     try { 
-        const id = Number(req.params.id);
         const { title, description, priority } = req.body; 
 
-        // Find the selected task in the list
-        const task = tasks.find(t => t.id === id);  
+        // Find the selected task in the users tasks by id in mongoDB
+         const task = await Task.findOne({ _id: req.params.id, userId: req.user.id }); 
 
         // If not found return error
         if(!task){
@@ -102,7 +92,8 @@ router.put("/:id", (req, res, next) => {
         } 
 
         // Return the updated task
-        res.json(task); 
+        await task.save();
+        res.json(task);
 
     } catch (error) {
         next(error);
@@ -110,25 +101,19 @@ router.put("/:id", (req, res, next) => {
 }); 
 
 // DELETE /api/tasks/:id - Delete a task
-router.delete("/:id", (req, res, next) => {
-    try{
-        const id = Number(req.params.id);
-
-        // Find index of selected task by given id
-        const index = tasks.findIndex(t => t.id === id); 
+router.delete("/:id", auth, async (req, res, next) => {
+    try {
+        const task = await Task.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
 
         // If not found return error
-        if(index === -1){
+        if(!task){
             const error = new Error("Task not found");
             error.status = 404;
             throw error;
         } 
 
-        // Delete the task from the list by index
-        const [deletedTask] = tasks.splice(index, 1);
-
         // Return the deleted task
-        res.json(deletedTask);
+        res.json(task);
 
     } catch (error){
         next(error)
@@ -136,12 +121,11 @@ router.delete("/:id", (req, res, next) => {
 });
 
 // PATCH /api/tasks/:id/toggle - Toggle task completion status
-router.patch("/:id/toggle", (req, res, next) => {
+router.patch("/:id/toggle", auth, async (req, res, next) => {
     try{ 
-        const id = Number(req.params.id);
         // Find the selected task in the list
-        const task = tasks.find(t => t.id === id); 
-
+        const task = await Task.findOne({ _id: req.params.id, userId: req.user.id });
+        
         // If its not there then return error
         if(!task){
             const error = new Error("Task not found");
@@ -153,6 +137,7 @@ router.patch("/:id/toggle", (req, res, next) => {
         task.completed = !task.completed;
 
         // Return the updated task
+        await task.save();
         res.json(task);
 
     } catch (error){

@@ -100,7 +100,7 @@ function App() {
     <div className="App">
       <div className="app-header">
         <img src="/tasklogo.png" alt="Task Logo" className="app-logo" />
-        <h1>Task Manager for Helfy</h1>
+        <h1>Task Manager</h1>
       </div>
       <h4>Created by: Ofek Yemini</h4>
       
