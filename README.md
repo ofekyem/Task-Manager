@@ -27,16 +27,3 @@ Tasks are displayed in a carousel.
 the arrow on the right or the left a transition is made and we will see the next 3 tasks 
 we can continue to go next or prev with the arrows but once we passed the number of tasks that we have 
 then it will return to the first three. This makes the carousel work smooth. 
-- Had some time so i added the search feature to search for tasks by title. 
-
-## Time Spent 
-- Backend: 60 minutes 
-- planing the Frontend look: 10 minutes. 
-- Core functionallity of the Frontend: 80 minutes. 
-- Styling all the components and pages: 50 minutes.  
-- Add Search Bonus: 15 minutes. 
-- Final Testing & Finallization: 25 minutes. 
-
-
-
-
