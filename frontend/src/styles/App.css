@@ -18,7 +18,8 @@ body{
   justify-content: center;
   gap: 12px;
   margin-bottom: 10px;
-}
+  position: relative;
+} 
 
 .app-logo{
   width: 48px;   
@@ -31,6 +32,24 @@ body{
   font-size: 2.2rem;
   margin-bottom: 5px;
   color: #1f2937; 
+} 
+
+.logout-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #ef4444; /* אדום */
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #dc2626;
 }
 
 .App h4{

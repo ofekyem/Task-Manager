@@ -21,9 +21,11 @@ router.post("/", auth, async (req, res, next) => {
         const { title, description, priority } = req.body;  
 
         // Check if there is a title:
+        console.log("Headers:", req.headers);
+        console.log("Body:", req.body);
         if(!title || !title.trim()){
             const error = new Error("Title is required"); 
-            error.status = 400; 
+            error.status = 420; 
             throw error;
         } 
 
@@ -141,6 +143,7 @@ router.patch("/:id/toggle", auth, async (req, res, next) => {
         res.json(task);
 
     } catch (error){
+        console.error("Toggle error:", error);
         next(error);    
     }
 });

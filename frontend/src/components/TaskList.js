@@ -66,7 +66,7 @@ function TaskList({ tasks, onDelete, onToggle, onUpdate }) {
                         <div className="carousela-page" key={`page-${pageIdx}`}>
                             {page.map((task, slotIdx) =>
                                 task ? (
-                                <div className="carousela-item" key={`task-${task.id}`}>
+                                <div className="carousela-item" key={`task-${task._id}`}>
                                     <TaskItem
                                         task={task}
                                         onDelete={onDelete}

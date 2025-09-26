@@ -9,7 +9,8 @@ function TaskForm({ onCreate }){
 
     const handleSubmit = (e) => {
         e.preventDefault(); 
-        if (!title.trim()){
+        if (!title.trim()){ 
+            alert("Title is required");
             return;
         }
 

@@ -13,7 +13,7 @@ function TaskItem({ task, onDelete, onToggle, onUpdate }) {
 
     // When we finished editing, we call the onUpdate and finish edit mode
     const handleSave = () => {
-        onUpdate(task.id, { title, description, priority });
+        onUpdate(task._id, { title, description, priority });
         setIsEditing(false);
     }; 
 
@@ -65,13 +65,13 @@ function TaskItem({ task, onDelete, onToggle, onUpdate }) {
                 </span>
 
                 <div className="task-actions">
-                    <button onClick={() => onToggle(task.id)}>
+                    <button onClick={() => onToggle(task._id)}>
                     {task.completed ? "Mark as Pending" : "Complete"}
                     </button>
                     {!task.completed && (
                     <button onClick={() => setIsEditing(true)}>Edit</button>
                     )}
-                    <button onClick={() => onDelete(task.id)}>
+                    <button onClick={() => onDelete(task._id)}>
                     Delete
                     </button>
                 </div>

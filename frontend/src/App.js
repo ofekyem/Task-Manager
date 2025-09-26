@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from "react";
-import {getTasks, createTask, updateTask, deleteTask, toggleTask,} from "./services/api";
+import {getTasks, createTask, updateTask, deleteTask, toggleTask,} from "./services/taskApi";
+import { logout } from "./services/userApi";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
-import TaskFilter from "./components/TaskFilter";
+import TaskFilter from "./components/TaskFilter"; 
+import AuthPage from "./components/AuthPage";
 import "./styles/App.css";
 
 function App() {
   const [tasks, setTasks] = useState([]); 
   const [filter, setFilter] = useState("all");
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(""); 
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
-  // When app starts, use the loadTasks function
+  // When user logs in, use the loadTasks function
   useEffect(() => {
-    loadTasks();
-  }, []);
+    if (token) {
+      loadTasks();
+    }
+  }, [token]);
 
   // This function load to the state all the tasks from server using the api call
   async function loadTasks(){
@@ -43,7 +48,7 @@ function App() {
     try{
       const updated = await updateTask(id, updates);
       // Search the updated task in the state and update it locally
-      setTasks(tasks.map((t) => (t.id === id ? updated : t)));
+      setTasks(tasks.map((t) => (t._id === id ? updated : t)));
 
     } catch (err){
       console.error("Error updating task:", err.message);
@@ -56,7 +61,7 @@ function App() {
     try{
       await deleteTask(id);
       // Search the deleted task in the state and remove it locally
-      setTasks(tasks.filter((t) => t.id !== id));
+      setTasks(tasks.filter((t) => t._id !== id));
 
     } catch (err){
       console.error("Error deleting task:", err.message);
@@ -69,7 +74,7 @@ function App() {
     try{
       const toggled = await toggleTask(id);
       // Search the toggled task in the state and update it locally
-      setTasks(tasks.map((t) => (t.id === id ? toggled : t)));
+      setTasks(tasks.map((t) => (t._id === id ? toggled : t)));
 
     } catch (err){
       console.error("Error toggling task:", err.message);
@@ -94,13 +99,22 @@ function App() {
     const searchTerm = search.toLowerCase().trim();
     const title = task.title.toLowerCase();
     return title.includes(searchTerm);
-  });
+  }); 
+
+  // If no token, show the authentication page
+  if (!token) {
+    return <AuthPage onAuth={(t) => { localStorage.setItem("token", t); setToken(t); }} />;
+  }
 
   return (
     <div className="App">
       <div className="app-header">
         <img src="/tasklogo.png" alt="Task Logo" className="app-logo" />
-        <h1>Task Manager</h1>
+        <h1>Task Manager</h1> 
+
+        <button className="logout-btn" onClick={() => { logout(); setToken(null); }}>
+          Log-Out
+        </button>
       </div>
       <h4>Created by: Ofek Yemini</h4>
       
@@ -121,7 +135,9 @@ function App() {
         onUpdate={handleUpdate}
         onDelete={handleDelete}
         onToggle={handleToggle}
-      />
+      /> 
+
+      
     </div>
   );
 }
